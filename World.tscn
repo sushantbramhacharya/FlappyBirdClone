@@ -1,0 +1,40 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://textures/background.png" type="Texture" id=1]
+[ext_resource path="res://CHARS/player/PLAYER.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Environment/GROUND.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Environment/ObstacleSpanner.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ui/HUD.tscn" type="PackedScene" id=5]
+[ext_resource path="res://World.gd" type="Script" id=6]
+[ext_resource path="res://ui/MenuLayer.tscn" type="PackedScene" id=7]
+[ext_resource path="res://audio/swoosh.wav" type="AudioStream" id=8]
+
+[node name="World" type="Node2D"]
+position = Vector2( 0.449951, 0.668715 )
+script = ExtResource( 6 )
+
+[node name="background" type="Sprite" parent="."]
+position = Vector2( 239.555, 426.344 )
+texture = ExtResource( 1 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 90.8621, 469.647 )
+gravity_scale = 0.0
+
+[node name="ObstacleSpanner" parent="." instance=ExtResource( 4 )]
+position = Vector2( 756.807, 0 )
+
+[node name="GROUND" parent="." instance=ExtResource( 3 )]
+position = Vector2( 248.866, 773.925 )
+
+[node name="HUD" parent="." instance=ExtResource( 5 )]
+
+[node name="MenuLayer" parent="." instance=ExtResource( 7 )]
+
+[node name="swoosh" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+[connection signal="died" from="Player" to="." method="_on_Player_died"]
+[connection signal="body_entered" from="GROUND/DeathZone" to="." method="_on_DeathZone_body_entered"]
+[connection signal="start_game" from="MenuLayer" to="." method="_on_MenuLayer_start_game"]
+
+[editable path="GROUND"]
